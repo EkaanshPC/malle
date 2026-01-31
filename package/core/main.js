@@ -7,12 +7,18 @@ import MalleClass from "./class";
  * and validate inputs according to schemas.
  * 
  * @param {Object} [config] - Optional configuration object.
- * @param {"strict"|"loose"} [config.mode="strict"] - Parsing mode. 
- *        - `"strict"`: arguments must be in order.  
- *        - `"loose"`: arguments can be anywhere.
+ * @param {"strict"|"loose"} [config.mode="strict"] - Parsing mode.
+ *        - `"strict"`: matches types and positional args conservatively.
+ *        - `"loose"`: more permissive (order-agnostic, type-aliases such as `arr`/`array` allowed).
  * @param {boolean} [config.debug=false] - If `true`, prints debug info to console.
  *
  * @returns {MalleClass}
+ *
+ * @remarks
+ * The object returned by `expect(...).guess(...)` contains the matched keys
+ * plus two meta-keys:
+ *  - `__DidSucceed` (boolean) — true when all *required* schemas were satisfied
+ *  - `__errors` (Array) — list of reported issues when parsing failed
  *
  * @example
  * import malle from "@briklab/malle";

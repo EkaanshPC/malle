@@ -2,6 +2,6 @@
 ## Already Done
 ## In Progress
  - Implement "strict" mode
-## In Future
  - Implement "loose" mode
+## In Future
  - Implement a cache system in the [MalleClass](./package/core/class.js)

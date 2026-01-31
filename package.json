@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docs:start": "pnpm --prefix documentation start",
+    "docs:build": "pnpm --prefix documentation build",
+    "docs:serve": "pnpm --prefix documentation serve"
   },
   "keywords": [],
   "author": "",

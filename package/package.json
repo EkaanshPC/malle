@@ -1,0 +1,12 @@
+{
+  "name": "@briklab/malle",
+  "version": "1.0.0",
+  "description": "A fast, flexible, developer-first argument parser for modern JavaScript and Node.js.",
+  "main": "index.js",
+  "scripts": {
+  },
+  "keywords": [],
+  "author": "EkaanshPC",
+  "license": "Apache 2.0",
+  "files": ["class/**","core/**","helpers/**","index.js","index.cjs"]
+}

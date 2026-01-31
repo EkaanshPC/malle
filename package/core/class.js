@@ -48,7 +48,9 @@ const guessor = {
       cM.log(["args:", args], true);
       cM.log(["schemas:", schemas], true);
     }
-    return this.strictModeGuessor(args, schemas, mode, debug);
+
+    if (mode === "loose") return this.looseModeGuessor(args, schemas, debug);
+    return this.strictModeGuessor(args, schemas, debug);
   },
   /**
    *
@@ -57,8 +59,58 @@ const guessor = {
    * @param {"strict"|"loose"} mode
    * @param {Boolean} debug
    */
-  strictModeGuessor(args, schemas, mode, debug) {
-    let result = {};
+  looseModeGuessor(args, schemas, debug) {
+    const result = {};
+    const errors = [];
+
+    const consumed = new Set();
+
+    for (let s = 0; s < schemas.length; s++) {
+      const schema = schemas[s];
+      let found = false;
+
+      for (let a = 0; a < args.length; a++) {
+        if (consumed.has(a)) continue;
+        if (isType(args[a], "object") && !isUndefined(args[a][schema.name])) {
+          result[schema.name] = args[a][schema.name];
+          consumed.add(a);
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        for (let a = 0; a < args.length; a++) {
+          if (consumed.has(a)) continue;
+          if (isType(args[a], schema.type)) {
+            result[schema.name] = args[a];
+            consumed.add(a);
+            found = true;
+            break;
+          }
+        }
+      }
+
+      if (!found) {
+        if (schema.optional) {
+          result[schema.name] = undefined;
+        } else {
+          errors.push({
+            name: schema.name,
+            expected: schema.type,
+            message: `missing required argument '${schema.name}' of type '${schema.type}' (loose mode)`,
+          });
+        }
+      }
+    }
+
+    const success = errors.length === 0;
+    const report = Object.assign({}, result, { __DidSucceed: success, __errors: errors });
+    if (!success && debug) cM.log(["malle: loose-mode guess errors", errors], true);
+    return report;
+  },  strictModeGuessor(args, schemas, debug) {
+    const result = {};
+    const errors = [];
     let onArgCounter = 0;
 
     for (let s = 0; s < schemas.length; s++) {
@@ -78,7 +130,7 @@ const guessor = {
       if (!found) {
         let consumedIndex = -1;
         for (let i = onArgCounter; i < args.length; i++) {
-          if (typeof args[i] === schema.type) {
+          if (isType(args[i], schema.type)) {
             consumedIndex = i;
             break;
           }
@@ -90,11 +142,20 @@ const guessor = {
           found = true;
         } else if (schema.optional) {
           result[schema.name] = undefined;
+        } else {
+          errors.push({
+            name: schema.name,
+            expected: schema.type,
+            message: `missing required argument '${schema.name}' of type '${schema.type}'`,
+          });
         }
       }
     }
 
-    return result;
+    const success = errors.length === 0;
+    const report = Object.assign({}, result, { __DidSucceed: success, __errors: errors });
+    if (!success && debug) cM.log(["malle: guess errors", errors], true);
+    return report;
   },
 };
 //#endregion Helpers
