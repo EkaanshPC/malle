@@ -17,6 +17,6 @@ export const cM = {
   },
   log(message,debug){
     if(!debug)return
-    console.log("%c[Malle] Log: %c","color:lime;font-weight:bold;",message,"")
+    console.log("%c[Malle] Log: %c","color:lime;font-weight:bold;","",message)
   }
 };

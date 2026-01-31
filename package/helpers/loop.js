@@ -1,0 +1,1 @@
+export default function loop(t,f,...a){for(let i=0;i<t;i++){f(...a)}}

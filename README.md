@@ -5,7 +5,6 @@
 
 It allows functions to accept arguments in **any order**, intelligently infer intent, and validate inputs without relying on rigid, positional APIs.
 
-
 ---
 
 ## Features
@@ -79,4 +78,21 @@ function calculate(...args) {
        :                    a * b;
 }
 ```
+
+## Optional-argument example
+
+```js
+// 'Mode' is optional — if not provided it will be `undefined` and won't
+// consume positional args that follow.
+import malle from "@briklab/malle";
+
+const res = malle().expect(
+  { name: "Mode", type: "string", optional: true },
+  { name: "count", type: "number" }
+).guess(42);
+
+// result: { Mode: undefined, count: 42 }
+console.log(res);
+```
+
 
