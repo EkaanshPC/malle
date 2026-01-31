@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
   },
+  "private":false,
   "keywords": [],
   "author": "EkaanshPC",
   "license": "Apache 2.0",
