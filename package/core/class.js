@@ -20,7 +20,7 @@ const expector = {
     }
 
     for (const schema of schemasArr) {
-      if (!checkFormat({ name: "string" }, schema)) {
+      if (!checkFormat({ name: "string", type:"string" }, schema)) {
         new cM.error("Invalid format in schema object.", debug);
         return false;
       }

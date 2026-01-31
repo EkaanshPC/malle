@@ -1,14 +1,15 @@
 # Malle
 
+
 **Malle** (*short for **Malleable***) is a **fast, flexible, developer-first** argument parser for **modern JavaScript and Node.js**.
 
 It allows functions to accept arguments in **any order**, intelligently infer intent, and validate inputs without relying on rigid, positional APIs.
 
-> [!IMPORTANT]
-> 
-> 
-> Malle is a **BrikLab** sub-package and part of the BrikLab ecosystem.
-> 
+<div style="color:white;text-shadow:1px 1px 1px #000; border-radius: 8px; border-shadow: 1px 1px 1px #000; padding: 12px; background-color: #76eaff;">
+  <strong>Information</strong>  
+  This package is a briklab sub-package
+</div>
+
 
 ---
 
@@ -26,7 +27,6 @@ It allows functions to accept arguments in **any order**, intelligently infer in
     
     Define schemas, constraints, defaults, and custom resolvers.
     
-
 ---
 
 ## 📦 Installation
@@ -35,28 +35,24 @@ It allows functions to accept arguments in **any order**, intelligently infer in
 
 ```bash
 npm install @briklab/malle
-
 ```
 
 **pnpm**
 
 ```bash
 pnpm add @briklab/malle
-
 ```
 
 **yarn**
 
 ```bash
 yarn add @briklab/malle
-
 ```
 
 **bun**
 
 ```bash
 bun add @briklab/malle
-
 ```
 
 ---
@@ -87,5 +83,5 @@ function calculate(...args) {
        : c === "divide"   ? a / b
        :                    a * b;
 }
-
 ```
+
