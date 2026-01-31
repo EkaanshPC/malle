@@ -1,11 +1,10 @@
 # Malle
-
+![aea](./info-box.svg)
 
 **Malle** (*short for **Malleable***) is a **fast, flexible, developer-first** argument parser for **modern JavaScript and Node.js**.
 
 It allows functions to accept arguments in **any order**, intelligently infer intent, and validate inputs without relying on rigid, positional APIs.
 
-![aea](./info-box.svg)
 
 ---
 
