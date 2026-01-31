@@ -20,6 +20,11 @@ import MalleClass from "./class";
  *  - `__DidSucceed` (boolean) — true when all *required* schemas were satisfied
  *  - `__errors` (Array) — list of reported issues when parsing failed
  *
+ * Schema notes:
+ *  - `type` supports unions (`string|number`), generic arrays (`T[]`, e.g. `number[]`) and `any`.
+ *  - `aliasNames` accepts an array of alternate object-property names.
+ *  - `spread: true` collects multiple matching positional values into an array.
+ *
  * @example
  * import malle from "@briklab/malle";
  * 

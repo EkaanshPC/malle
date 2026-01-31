@@ -71,4 +71,27 @@ const res = malle().expect(
 console.log(res);
 ```
 
+## Spread, unions & aliases
+
+```js
+// Examples demonstrating: aliasNames, union types, and spread collection
+function add(...args){
+  const { Mode, Numbers, __DidSucceed } = malle({ mode: 'strict' }).expect(
+    { name: 'mode', aliasNames: ['m'], type: 'string|string[]', optional: true },
+    { name: 'numbers', type: 'number[]', spread: true }
+  ).guess(args);
+
+  // .guess(args) where args is the rest-array is supported
+  // possible calls that work:
+  // add('sum', 1, 2, 3)
+  // add({ m: 'sum' }, [1,2,3])
+  // add(['sum'], 1,2)
+
+  if (!__DidSucceed) return;
+  // Mode => 'sum' | ['sum']
+  // Numbers => [1,2,3]
+}
+```
+
+
 

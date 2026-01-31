@@ -16,5 +16,4 @@
  *   return Mode === "add" ? Number1 + Number2 : Number1 - Number2;
  * }
  */
-export { default } from "./core/main.js";
 export * from "./core/main.js";

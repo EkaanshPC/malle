@@ -23,18 +23,32 @@ const expector = {
     for (const schema of schemasArr) {
       if (
         !checkFormat(
-          { name: "string", type: "string", optional: "boolean" },
+          { name: "string", type: "string", optional: "boolean", aliasNames: "array", spread: "boolean" },
           schema,
         )
       ) {
         new cM.error(
-          "Invalid format in schema object. (expected {name, type, optional?})",
+          "Invalid format in schema object. (expected {name, type, optional?, aliasNames?, spread?})",
           debug,
         );
         return false;
       }
 
       schema.optional = !!schema.optional;
+      schema.spread = !!schema.spread;
+
+      if (!isUndefined(schema.aliasNames)) {
+        if (!Array.isArray(schema.aliasNames) || !areAllTypes(schema.aliasNames, "string")) {
+          new cM.error("schema.aliasNames must be an array of strings", debug);
+          return false;
+        }
+      } else {
+        schema.aliasNames = [];
+      }
+
+      if (!schema.spread && typeof schema.type === "string" && /\[\]$/.test(schema.type)) {
+        schema.spread = true;
+      }
     }
 
     return schemasArr;
@@ -62,7 +76,6 @@ const guessor = {
   looseModeGuessor(args, schemas, debug) {
     const result = {};
     const errors = [];
-
     const consumed = new Set();
 
     for (let s = 0; s < schemas.length; s++) {
@@ -71,11 +84,43 @@ const guessor = {
 
       for (let a = 0; a < args.length; a++) {
         if (consumed.has(a)) continue;
-        if (isType(args[a], "object") && !isUndefined(args[a][schema.name])) {
-          result[schema.name] = args[a][schema.name];
-          consumed.add(a);
+        if (isType(args[a], "object")) {
+          const keys = [schema.name].concat(schema.aliasNames || []);
+          for (const k of keys) {
+            if (!isUndefined(args[a][k])) {
+              result[schema.name] = args[a][k];
+              consumed.add(a);
+              found = true;
+              break;
+            }
+          }
+          if (found) break;
+        }
+      }
+
+      if (!found && schema.spread) {
+        let elemType = null;
+        if (typeof schema.type === "string") {
+          if (/\[\]$/.test(schema.type)) elemType = schema.type.replace(/\[\]$/, "");
+          else elemType = schema.type;
+        }
+
+        const collected = [];
+        for (let a = 0; a < args.length; a++) {
+          if (consumed.has(a)) continue;
+          if (isType(args[a], elemType)) {
+            collected.push(args[a]);
+            consumed.add(a);
+          }
+          else if (isType(args[a], elemType + "[]")) {
+            collected.push(...args[a]);
+            consumed.add(a);
+          }
+        }
+
+        if (collected.length > 0) {
+          result[schema.name] = collected;
           found = true;
-          break;
         }
       }
 
@@ -117,37 +162,72 @@ const guessor = {
       const schema = schemas[s];
       let found = false;
 
+      // 1) try named object property or any alias
       for (let a = 0; a < args.length; a++) {
         if (isType(args[a], "object")) {
-          if (!isUndefined(args[a][schema.name])) {
-            result[schema.name] = args[a][schema.name];
-            found = true;
-            break;
+          const keys = [schema.name].concat(schema.aliasNames || []);
+          for (const k of keys) {
+            if (!isUndefined(args[a][k])) {
+              result[schema.name] = args[a][k];
+              found = true;
+              break;
+            }
           }
+          if (found) break;
         }
       }
 
       if (!found) {
-        let consumedIndex = -1;
-        for (let i = onArgCounter; i < args.length; i++) {
-          if (isType(args[i], schema.type)) {
-            consumedIndex = i;
-            break;
+        if (schema.spread) {
+          let elemType = null;
+          if (typeof schema.type === "string") {
+            if (/\[\]$/.test(schema.type)) elemType = schema.type.replace(/\[\]$/, "");
+            else elemType = schema.type;
+          }
+
+          const collected = [];
+          let i = onArgCounter;
+          for (; i < args.length; i++) {
+            if (isType(args[i], elemType)) {
+              collected.push(args[i]);
+            } else break;
+          }
+
+          if (collected.length > 0) {
+            result[schema.name] = collected;
+            onArgCounter = i;
+            found = true;
+          } else if (isType(args[onArgCounter], elemType + "[]")) {
+            result[schema.name] = args[onArgCounter];
+            onArgCounter = onArgCounter + 1;
+            found = true;
+          }
+        } else {
+          let consumedIndex = -1;
+          for (let i = onArgCounter; i < args.length; i++) {
+            if (isType(args[i], schema.type)) {
+              consumedIndex = i;
+              break;
+            }
+          }
+
+          if (consumedIndex !== -1) {
+            result[schema.name] = args[consumedIndex];
+            onArgCounter = consumedIndex + 1;
+            found = true;
           }
         }
 
-        if (consumedIndex !== -1) {
-          result[schema.name] = args[consumedIndex];
-          onArgCounter = consumedIndex + 1;
-          found = true;
-        } else if (schema.optional) {
-          result[schema.name] = undefined;
-        } else {
-          errors.push({
-            name: schema.name,
-            expected: schema.type,
-            message: `missing required argument '${schema.name}' of type '${schema.type}'`,
-          });
+        if (!found) {
+          if (schema.optional) {
+            result[schema.name] = undefined;
+          } else {
+            errors.push({
+              name: schema.name,
+              expected: schema.type,
+              message: `missing required argument '${schema.name}' of type '${schema.type}'`,
+            });
+          }
         }
       }
     }
