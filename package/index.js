@@ -8,12 +8,13 @@
  * @example
  * import malle from "@briklab/malle";
  * function calc(...args) {
- *   const {Number1, Number2, Mode} = malle.expect(
+ *   const {Number1, Number2, Mode} = malle({mode:"strict"}).expect(
  *     {name:"Number1", type:"number"},
  *     {name:"Number2", type:"number"},
  *     {name:"Mode", type:"string"}
- *   );
+ *   ).guess(args);
  *   return Mode === "add" ? Number1 + Number2 : Number1 - Number2;
  * }
  */
+export { default } from "./core/main.js";
 export * from "./core/main.js";

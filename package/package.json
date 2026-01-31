@@ -3,14 +3,19 @@
   "version": "1.0.2",
   "description": "A fast, flexible, developer-first argument parser for modern JavaScript and Node.js.",
   "main": "index.js",
-  "scripts": {
-  },
+  "scripts": {},
   "publishConfig": {
-  "access": "public"
-},
-  "private":false,
+    "access": "public"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./class": "./class/index.js"
+  },
+  "private": false,
   "keywords": [],
   "author": "EkaanshPC",
   "license": "Apache 2.0",
-  "files": ["class/**","core/**","helpers/**","index.js","index.cjs"]
+  "files": [
+    "index.js"
+  ]
 }
