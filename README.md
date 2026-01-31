@@ -1,5 +1,5 @@
 # Malle
-![aea](./info-box.svg)
+![GitHub forks](https://img.shields.io/github/forks/EkaanshPC/malle?style=flat-square) ![GitHub License](https://img.shields.io/github/license/EkaanshPC/malle?style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/EkaanshPC/malle?style=flat-square)
 
 **Malle** (*short for **Malleable***) is a **fast, flexible, developer-first** argument parser for **modern JavaScript and Node.js**.
 
