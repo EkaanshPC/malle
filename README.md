@@ -9,8 +9,7 @@ It allows functions to accept arguments in **any order**, intelligently infer in
   <strong>Information</strong>  
   This package is a briklab sub-package
 </div>
-
-<details> <summary>ℹ️ Information</summary> This package is a BrikLab sub-package </details>
+![aea](info-box.svg)
 ---
 
 ## Features
