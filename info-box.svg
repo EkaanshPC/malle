@@ -2,6 +2,11 @@
    
     <circle cx="10" cy="10" r="10" fill="white"/>
   <text fill="#000000" font-family="serif" font-size="12" font-weight="bold" x="8" y="14">i</text>
-  <text fill="#ffffff" font-family="Arial, sans-serif" font-size="12" x="10" y="14"><tspan fill="#ffffff" font-family="Arial, sans-serif" font-size="14" font-weight="bold" x="30" y="14">Information: </tspan>This package is a briklab sub-package</text>
-  
+
+  <text stroke="#000000" 
+      stroke-width="1" 
+      paint-order="stroke" fill="#ffffff" font-family="Arial, sans-serif" font-size="12" x="10" y="14"><tspan stroke="#000000" 
+      stroke-width="1" 
+      paint-order="stroke" fill="#ffffff" font-family="Arial, sans-serif" font-size="14" font-weight="bold" x="30" y="14">Information: </tspan>This package is a briklab sub-package</text>
+
 </svg>
