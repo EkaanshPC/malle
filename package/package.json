@@ -16,6 +16,10 @@
   "author": "EkaanshPC",
   "license": "Apache 2.0",
   "files": [
-    "index.js"
+    "index.js",
+    "helpers/**",
+    "class/**",
+    "core/**",
+    "index.cjs"
   ]
 }
