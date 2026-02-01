@@ -5,6 +5,12 @@
 
 It allows functions to accept arguments in **any order**, intelligently infer intent, and validate inputs without relying on rigid, positional APIs.
 
+> Wiki
+> https://github.com/EkaanshPC/malle/wiki
+
+> Github
+> https://github.com/EkaanshPC/malle
+
 ---
 
 ## Features
