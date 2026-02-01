@@ -1,6 +1,6 @@
 {
   "name": "@briklab/malle",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A fast, flexible, developer-first argument parser for modern JavaScript and Node.js.",
   "main": "index.js",
   "scripts": {},
